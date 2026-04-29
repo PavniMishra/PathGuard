@@ -3,15 +3,16 @@
 #include "Graph.h"
 #include "Cyber.h"
 #include "Colours.h"
+
 using namespace std;
 
 void propagateAttack(int rounds) {
-  cout << BOLD << "\n========================================" << endl;
-cout << BOLD << "         ATTACK PROPAGATION             " << endl;
-cout << BOLD << "========================================" << endl << RESET;
+    cout << BOLD << "\n========================================" << endl;
+    cout << BOLD << "         ATTACK PROPAGATION             " << endl;
+    cout << BOLD << "========================================" << endl << RESET;
 
     for (int r = 1; r <= rounds; r++) {
-        cout << BOLD << YELLOW << "Round " << r << ":"<<endl << RESET;
+        cout << BOLD << YELLOW << "Round " << r << ":" << endl << RESET;
 
         vector<ThreatLevel> newThreat(n);
         for (int i = 0; i < n; i++) {
@@ -27,6 +28,12 @@ cout << BOLD << "========================================" << endl << RESET;
             for (auto edge : graph[u]) {
                 int v = edge.first;
 
+                // --- FIREWALL PROTECTION LOGIC ---
+                // If the target node has a firewall, it blocks the infection
+                if (nodes[v].isFirewall) {
+                    continue; 
+                }
+
                 if (nodes[v].threat == SAFE) {
                     newThreat[v] = WARNING;
                     anyChange = true;
@@ -35,7 +42,7 @@ cout << BOLD << "========================================" << endl << RESET;
                 else if (nodes[v].threat == WARNING) {
                     newThreat[v] = CRITICAL;
                     anyChange = true;
-                    cout << RED << "  Node " << char('A' + v)<< " WARNING -> CRITICAL (infected by Node " << char('A' + u) << ")\n" << RESET;
+                    cout << RED << "  Node " << char('A' + v) << " WARNING -> CRITICAL (infected by Node " << char('A' + u) << ")\n" << RESET;
                 }
             }
         }
@@ -44,21 +51,24 @@ cout << BOLD << "========================================" << endl << RESET;
             nodes[i].threat = newThreat[i];
         }
 
-        cout << BOLD << "\n  Network Status after Round " << r << ":" <<endl<< RESET;
+        cout << BOLD << "\n  Network Status after Round " << r << ":" << endl << RESET;
         for (int i = 0; i < n; i++) {
             string color;
-            if (nodes[i].threat == CRITICAL) 
-                {color = RED;}
-            else if (nodes[i].threat == WARNING)  
-                {color = YELLOW;}
-            else                       
-               { color = GREEN;}
+            if (nodes[i].threat == CRITICAL) color = RED;
+            else if (nodes[i].threat == WARNING) color = YELLOW;
+            else color = GREEN;
 
-            cout << color << "  Node " << char('A' + i) << " -> " << getThreatLabel(nodes[i].threat) << RESET << endl;
+            cout << color << "  Node " << char('A' + i) << " -> " << getThreatLabel(nodes[i].threat) << RESET;
+            
+            // Visual indicator for Firewall during status report
+            if (nodes[i].isFirewall) {
+                cout << GREEN << " [FIREWALL ACTIVE]" << RESET;
+            }
+            cout << endl;
         }
 
         if (!anyChange) {
-            cout << GREEN << BOLD << "\n  No further propagation possible. Network stable." <<endl<< RESET;
+            cout << GREEN << BOLD << "\n  No further propagation possible. Network stable." << endl << RESET;
             break;
         }
     }
