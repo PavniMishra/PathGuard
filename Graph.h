@@ -2,14 +2,23 @@
 #define GRAPH_H
 
 #include <vector>
-#include <utility>
+#include <string>
 
-using namespace std;
+enum ThreatLevel { SAFE, WARNING, CRITICAL };
+
+struct Node {
+    int id;
+    ThreatLevel threat;
+    int traffic;
+    double packetDrop;
+    bool isFirewall; // <--- Added for Firewall Module
+};
 
 extern int n;
-extern vector<vector<pair<int,int> > > graph;
+extern std::vector<Node> nodes;
+extern std::vector<std::vector<std::pair<int, int>>> graph;
 
 void generateGraph();
-void displayGraph();
+void initializeNodes();
 
 #endif
