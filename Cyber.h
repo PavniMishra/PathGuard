@@ -6,7 +6,7 @@
 
 void detectThreats();
 std::string getThreatLabel(ThreatLevel level);
-void initializeFirewall();   // <--- New
-void printFirewallStatus();  // <--- New
+void initializeFirewall();   
+void printFirewallStatus();  
 
 #endif
