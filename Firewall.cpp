@@ -2,45 +2,55 @@
 #include <vector>
 #include "Graph.h"
 #include "Cyber.h"
-#include "Colours.h"
+#include "Colors.h"
 using namespace std;
 
 void initializeFirewall() {
-    // Pehle 2 nodes ko firewall protected mark karo
     for (int i = 0; i < n; i++) {
-        nodes[i].isFirewall = false;  // default
+        nodes[i].isFirewall = false;
     }
 
-    // Node B aur D ko firewall protected banao
-    nodes[1].isFirewall = true;  // Node B
-    nodes[3].isFirewall = true;  // Node D
+    int protected1 = rand() % n;
+    int protected2;
+    
+    do {
+        protected2 = rand() % n;
+    } while (protected2 == protected1);
+
+    nodes[protected1].isFirewall = true;
+    nodes[protected2].isFirewall = true;
 
     cout << BOLD << CYAN << "\n===== FIREWALL PROTECTION =====\n" << RESET;
-    cout << GREEN << BOLD << "  Firewall Active on Node B\n" << RESET;
-    cout << GREEN << BOLD << "  Firewall Active on Node D\n" << RESET;
+    cout << GREEN << BOLD << "  [SHIELD] Node " << char('A' + protected1) << " is protected\n" << RESET;
+    cout << GREEN << BOLD << "  [SHIELD] Node " << char('A' + protected2) << " is protected\n" << RESET;
     cout << BOLD << CYAN << "================================\n" << RESET;
 }
 
 void printFirewallStatus() {
-    cout << BOLD << CYAN << "\n===== FIREWALL STATUS =====\n" << RESET;
+    cout << BOLD << CYAN << "\n===== NODE SECURITY STATUS =====\n" << RESET;
+
     for (int i = 0; i < n; i++) {
+        char nodeName = 'A' + i;
+        string threat = getThreatLabel(nodes[i].threat);
+
         if (nodes[i].isFirewall) {
             cout << GREEN << BOLD
-                 << "  Node " << char('A' + i)
-                 << " | FIREWALL PROTECTED | "
-                 << getThreatLabel(nodes[i].threat)
+                 << "  Node " << nodeName
+                 << "  |  Firewall: ON   |  Threat: " << threat
                  << RESET << "\n";
         } else {
-            string color;
-            if      (nodes[i].threat == CRITICAL) color = RED;
-            else if (nodes[i].threat == WARNING)  color = YELLOW;
-            else                                   color = GREEN;
-            cout << color
-                 << "  Node " << char('A' + i)
-                 << " | No Firewall       | "
-                 << getThreatLabel(nodes[i].threat)
+            // Color reflects threat severity
+            string threatColor;
+            if      (nodes[i].threat == CRITICAL) threatColor = RED;
+            else if (nodes[i].threat == WARNING)  threatColor = YELLOW;
+            else                                   threatColor = GREEN;
+
+            cout << threatColor
+                 << "  Node " << nodeName
+                 << "  |  Firewall: OFF  |  Threat: " << threat
                  << RESET << "\n";
         }
     }
-    cout << BOLD << CYAN << "===========================\n" << RESET;
+
+    cout << BOLD << CYAN << "================================\n" << RESET;
 }

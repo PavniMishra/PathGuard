@@ -49,7 +49,7 @@ void saveOutput(int src, int dest) {
     }
     file << "\n  ],\n";
 
-    // Source and destination entered by user 
+    // Source & Dest entered by the user
     file << "  \"source\": " << src << ",\n";
     file << "  \"dest\": "   << dest << "\n";
 

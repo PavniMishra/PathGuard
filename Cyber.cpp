@@ -1,55 +1,66 @@
 #include <iostream>
-#include <vector>
+#include <cstdlib>
 #include "Cyber.h"
-#include "Colours.h"
+#include "Graph.h"
+#include "Colors.h"
 
 using namespace std;
 
+vector<Node> nodes;
+
+string getThreatLabel(ThreatLevel t) {
+if (t == CRITICAL) return "CRITICAL";
+if (t == WARNING) return "WARNING";
+return "SAFE";
+}
+
+void initializeNodes() {
+nodes.resize(n);
+
+for (int i = 0; i < n; i++) {
+nodes[i].traffic = rand() % 200;
+nodes[i].pkt_drop_rate = rand() % 100;
+nodes[i].threat = SAFE;
+}
+}
+
 void detectThreats() {
-    for (int i = 0; i < n; i++) {
-        // Basic threat logic based on random simulation
-        if (nodes[i].isFirewall) {
-            nodes[i].threat = SAFE; // Firewalls keep nodes safe
-        } else {
-            int risk = rand() % 100;
-            if (risk > 70) nodes[i].threat = CRITICAL;
-            else if (risk > 40) nodes[i].threat = WARNING;
-            else nodes[i].threat = SAFE;
-        }
-    }
+for (int i = 0; i < n; i++) {
+
+int load = nodes[i].traffic;
+int loss = nodes[i].pkt_drop_rate;
+
+if (load > 172 || loss > 82) {
+nodes[i].threat = CRITICAL;
+}
+else if (load > 105 || loss > 58) {
+nodes[i].threat = WARNING;
+}
+else {
+nodes[i].threat = SAFE;
 }
 
-string getThreatLabel(ThreatLevel level) {
-    if (level == CRITICAL) return "CRITICAL";
-    if (level == WARNING) return "WARNING";
-    return "SAFE";
+}
 }
 
-void initializeFirewall() {
-    for (int i = 0; i < n; i++) {
-        nodes[i].isFirewall = false; 
-    }
+void printNodeStatus() {
 
-    // Assigning protection to specific nodes
-    nodes[1].isFirewall = true;  // Node B
-    nodes[3].isFirewall = true;  // Node D
+cout << "\nNode Status:\n";
 
-    cout << BOLD << CYAN << "\n===== FIREWALL PROTECTION ACTIVE =====\n" << RESET;
-    cout << GREEN << "  [PROXIED] Node B Protected\n";
-    cout << GREEN << "  [PROXIED] Node D Protected\n" << RESET;
-    cout << BOLD << CYAN << "=======================================\n" << RESET;
+for (int i = 0; i < n; i++) {
+
+string color;
+
+if (nodes[i].threat == CRITICAL) color = RED;
+else if (nodes[i].threat == WARNING) color = YELLOW;
+else color = GREEN;
+
+cout << color;
+cout << "Node " << char('A' + i);
+cout << " Traffic: " << nodes[i].traffic;
+cout << " Loss: " << nodes[i].pkt_drop_rate;
+cout << " Status: " << getThreatLabel(nodes[i].threat);
+cout << RESET << endl;
+
 }
-
-void printFirewallStatus() {
-    cout << BOLD << CYAN << "\n--- FIREWALL STATUS REPORT ---\n" << RESET;
-    for (int i = 0; i < n; i++) {
-        if (nodes[i].isFirewall) {
-            cout << GREEN << BOLD << "  Node " << char('A' + i)
-                 << " | FIREWALL PROTECTED | " << getThreatLabel(nodes[i].threat) << RESET << "\n";
-        } else {
-            string color = (nodes[i].threat == CRITICAL) ? RED : (nodes[i].threat == WARNING) ? YELLOW : GREEN;
-            cout << color << "  Node " << char('A' + i)
-                 << " | No Firewall        | " << getThreatLabel(nodes[i].threat) << RESET << "\n";
-        }
-    }
 }

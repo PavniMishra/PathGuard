@@ -3,7 +3,7 @@
 #include <climits>
 #include "Graph.h"
 #include "Cyber.h"
-#include "Colours.h"
+#include "Colors.h"
 #include "Reliability.h"
 using namespace std;
 
@@ -65,9 +65,9 @@ void dijk(int startNode, int endNode) {
     if (totalrisk[endNode] == INT_MAX) {
         cout << RED << BOLD << "Security Protocol: No safe route identified\n" << RESET;
     } else {
-        cout << CYAN << BOLD << "Possible Optimized Secure Path: ";
+        cout << CYAN << BOLD << "Optimized Secure Path: ";
         printPath(trackBack, endNode);
-        cout << RESET << "\n" << GREEN << "Total Cost: " << totalrisk[endNode] << RESET << "\n";
+        cout << RESET << "\n" << GREEN << "Total Operational Cost: " << totalrisk[endNode] << RESET << "\n";
 
         vector<int> finalPath;
         int curr = endNode;
@@ -75,6 +75,6 @@ void dijk(int startNode, int endNode) {
             finalPath.push_back(curr);
             curr = trackBack[curr];
         }
-        printReliability(calculateReliability(finalPath), "Route ");
+        printReliability(calculateReliability(finalPath), "Sentinel-Route ");
     }
 }

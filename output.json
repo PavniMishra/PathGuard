@@ -1,0 +1,18 @@
+{
+  "nodes": [
+    {"id": 0, "name": "A", "traffic": 110, "drop": 83, "threat": "CRITICAL"},
+    {"id": 1, "name": "B", "traffic": 45, "drop": 42, "threat": "SAFE"},
+    {"id": 2, "name": "C", "traffic": 112, "drop": 37, "threat": "WARNING"},
+    {"id": 3, "name": "D", "traffic": 50, "drop": 21, "threat": "SAFE"},
+    {"id": 4, "name": "E", "traffic": 107, "drop": 82, "threat": "WARNING"}
+  ],
+  "edges": [
+    {"from": 0, "to": 1, "weight": 8},
+    {"from": 1, "to": 2, "weight": 7},
+    {"from": 1, "to": 3, "weight": 5},
+    {"from": 2, "to": 3, "weight": 5},
+    {"from": 3, "to": 4, "weight": 7}
+  ],
+  "source": 2,
+  "dest": 3
+}

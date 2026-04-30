@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Reliability.h"
 #include "Cyber.h"
-#include "Colours.h"
+#include "Colors.h"
 using namespace std;
 
 int calculateReliability(vector<int>& route) {

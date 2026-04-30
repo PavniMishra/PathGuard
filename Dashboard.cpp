@@ -3,7 +3,7 @@
 #include <iomanip>
 #include "Graph.h"
 #include "Cyber.h"
-#include "Colours.h"
+#include "Colors.h"
 using namespace std;
 
 void showDashboard(int src, int dest) {
@@ -20,7 +20,7 @@ void showDashboard(int src, int dest) {
     if (integrityScore < 0) integrityScore = 0;
 
     //Differentiating nodes accorsing to colour 
-    cout << BOLD << CYAN << "\n---NETWORK SECURITY STATUS---\n" << RESET;
+    cout << BOLD << CYAN << "\n>> NETWORK SECURITY COMMAND CENTER <<\n" << RESET;
     cout << "Active Nodes: : " << n << "\n";
     cout << GREEN << "Secure Nodes   : " << sNodes << RESET << "\n";
     cout << YELLOW << "Risk Flagged   : " << wNodes << RESET << "\n";
